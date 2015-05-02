@@ -1,0 +1,36 @@
+<h1>Reddit Posts</h1>
+
+<%= link_to 'New Post', new_user_post_path(current_user)  if current_user  %>
+
+<br><br>
+<% @posts.each_with_index do |post,index| %>
+	<div style=" width: 800px; border: 1px solid #000; padding-top: 10px; margin-bottom: 10px;">
+	<div id="<%=post.id%>" class="tar" style="width: 100px; display: inline-block;">
+		<p class="vote_value" style="background: #f7f7f7; text-align: center;"> <%=@vote_count_arr[index] %><p>
+		<% if session[:user_id] %>
+			<% vote_val = PostVote.where(user_id: session[:user_id], post_id: post.id).first.vote_val if PostVote.exists?(user_id: session[:user_id], post_id: post.id)%>
+			<% if vote_val == 0 || vote_val == nil%>
+			<% vote_up_class = 'in-active' %>
+			<% vote_down_class = 'in-active' %>
+			<% elsif vote_val == 1 %>
+			<% vote_up_class = '' %>
+			<% vote_down_class = 'in-active' %>
+			<% elsif vote_val == -1 %>
+			<% vote_up_class = 'in-active' %>
+			<% vote_down_class = '' %>
+			<% end %>
+			<%= link_to("Vote Up",post_votes_path, :remote => true, :class => 'post_vote_up '+vote_up_class)%>
+			<%= link_to("Vote Down",post_votes_path, :remote => true, :class => 'post_vote_down '+vote_down_class)%>
+		<% end %>
+	</div>
+	<div style="display: inline-block;">
+		<b>Title:</b> <%= link_to post.title, post_path(post)%> <br>
+		<span style=""> <em>Submitted at </em><%= time_ago_in_words(post.created_at)%> <em>by</em> <%=post.user.name%> <em>to</em>
+		<%=link_to(@post_subreddit[index].title,subreddit_path(@post_subreddit[index]))%></span>
+		<br><br>
+		<b>Content:</b> <%= post.content %><br>
+		<br>
+	</div>
+</div>
+<% end  %>
+

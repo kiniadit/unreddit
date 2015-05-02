@@ -1,0 +1,50 @@
+<h2><%=@post.title %></h2>
+<p><%=@post.content  %></p>
+<% if session[:user_id] == @post.user_id %>
+		<%= form_for([@post]) do |f| %>
+		<%= f.label :content  %>
+		<%= f.text_area :content %>
+		<br><br>
+
+		<%= f.submit  %>
+	<% end%>
+<% end %>
+
+<hr>
+<h5>Add a comment </h5>
+<%= form_for :comments, url: post_comments_path(@post) do |f| %>
+	<%= f.label :content  %>
+	<%= f.text_field :content %>
+	<br><br>
+
+	<%= f.submit  %>
+<% end%><br><br>
+<hr>
+<br>
+<% @post.comments.each_with_index do |comment,index| %>
+<div id="<%=comment.id%>" class="tar" style="width: 100px; display: inline-block;">
+		<p class="vote_value" style="background: #f7f7f7; text-align: center;"> <%=@vote_count_arr[index] %><p>
+		<% if session[:user_id] %>
+			<% vote_val = CommentVote.where(user_id: session[:user_id], comment_id: comment.id).first.vote_val if CommentVote.exists?(user_id: session[:user_id], comment_id: comment.id)%>
+			<% p "vote_val: " + vote_val.to_s %>
+			<% if vote_val == 0 || vote_val == nil%>
+			<% vote_up_class = 'in-active' %>
+			<% vote_down_class = 'in-active' %>
+			<% elsif vote_val == 1 %>
+			<% vote_up_class = '' %>
+			<% vote_down_class = 'in-active' %>
+			<% elsif vote_val == -1 %>
+			<% vote_up_class = 'in-active' %>
+			<% vote_down_class = '' %>
+			<% end %>
+			<%= link_to("Vote Up",comment_votes_path, :remote => true, :class => 'comment_vote_up '+vote_up_class)%>
+			<%= link_to("Vote Down",comment_votes_path, :remote => true, :class => 'comment_vote_down '+vote_down_class)%>
+		<% end %>
+	</div>
+	<div style="display: inline-block;">
+		<strong><%=comment.user.name  %></strong> <em>said</em>: <%=  comment.content %><br>
+		<span style=""><em><%= time_ago_in_words(comment.created_at)%> ago</em></span><br>
+	</div><br><br>
+<% end %>
+
+<%= link_to 'Back', '/'  %>
