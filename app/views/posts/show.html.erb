@@ -23,19 +23,21 @@
 	<div class="col-md-10 col-sm-6 col-xs-8">
 		<h3><%= @post.title %></h3>
 		<p><%=@post.content  %></p>
-	</div>
-</div>
+
 
 <% if session[:user_id] == @post.user_id %>
-	<%= form_for([@post]) do |f| %>
-		<%= f.label :content  %>
-		<%= f.text_area :content %>
+
+	<%= form_for([@post], class: 'form-group') do |f| %>
+		<%= f.text_area :content, class: 'form-control' %>
 		<br><br>
 
-		<%= f.submit  %>
+		<%= f.submit "Update", class: "btn btn-default" %>
 	<% end%>
-	<%=link_to("Delete", post_path, method: :delete) %>
+	<br>
+	<%=link_to("Delete", post_path, method: :delete, class: "btn btn-default" ) %>
 <% end %>
+	</div>
+</div>
 
 <hr>
 <h3>Add a comment </h3>

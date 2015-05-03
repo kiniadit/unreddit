@@ -16,6 +16,16 @@
 //= require autocomplete-rails
 //= require_tree .
 $(document).ready(function(){
+
+var pathname = window.location.pathname; // Returns path only
+
+if(pathname === '/')
+{
+localStorage['form_data'] = null;
+
+}
+
+
    $('.post_vote_up').on("click", function(e) {
       e.preventDefault();
       if((!$(this).hasClass("in-active")) && ($(this).next().hasClass('in-active'))){
@@ -168,4 +178,14 @@ $(document).ready(function(){
         });
 
    });
+   $('.new-post').on("click", function(e) {
+      var yourObject = $('form').serializeArray();
+      localStorage['form_data'] = JSON.stringify(yourObject);     
+    });
+if(localStorage['form_data'] !== null)
+{
+   $('.title_field').val(JSON.parse(localStorage.getItem('form_data'))[2].value);
+   $('.content_field').val(JSON.parse(localStorage.getItem('form_data'))[3].value);
+   $('.subreddit_field').val(JSON.parse(localStorage.getItem('form_data'))[4].value);
+}
 });

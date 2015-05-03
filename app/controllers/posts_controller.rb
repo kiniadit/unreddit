@@ -6,6 +6,7 @@ class PostsController < ApplicationController
 
   def new
     @subreddit_name = Subreddit.find(session[:subreddit_id]).title if session[:subreddit_id]
+
   end
 
   def create
@@ -17,6 +18,7 @@ class PostsController < ApplicationController
     	if @post.save
     		redirect_to '/'
     	else
+        flash[:error] = "Title must have at least 25 characters and content must have at least 100 characters"
     		redirect_to new_user_post_path(current_user)
     	end
     else
@@ -31,6 +33,7 @@ class PostsController < ApplicationController
     if @post.save
       redirect_to post_path
     else
+      flash[:error] = "Content must have at least 100 characters"
       redirect_to new_user_post_path(current_user)
     end
   end

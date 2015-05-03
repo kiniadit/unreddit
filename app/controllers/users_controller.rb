@@ -8,6 +8,11 @@ class UsersController < ApplicationController
 	      session[:user_id] = user.id
 	      redirect_to '/'
 	    else
+	    	flash[:error] = user.errors.full_messages.to_sentence
+	    #   user.errors.full_messages.each_with_index do |message,index|
+    	# 	flash[:index] = message
+ 		  # end
+ 		  p flash	
 	      redirect_to '/signup'
 	    end
 	end 
