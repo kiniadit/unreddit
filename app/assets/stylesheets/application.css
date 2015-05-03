@@ -14,36 +14,103 @@
  *= require_self
  */
 
+body {
+
+	font-family: 'Roboto' !important;
+}
+
+h1,h2,h3,h4,h5 {
+
+	font-weight: 300 !important;
+}
+
+p {
+
+	font-weight: 400 !important;
+}
+
 .post_vote_up, .comment_vote_up{
 	padding-left:5px; 
 	padding-right: 5px; 
-	color: white;
-	background: green;
+	color: rgb(23, 223, 23) !important;
+	
 }
 
 .post_vote_down, .comment_vote_down{
 	padding-left:5px; 
 	padding-right: 5px; 
-	color: white;
-	background: red;
+	color: red !important;
+	
 }
 
 .subscribed
 {
 padding-left:5px; 
 	padding-right: 5px; 
-	color: white;
-	background: green;
+	color: green !important;
 
 }
 
 
 .in-active
 {
-	background: #eee;
-	color: #444;
+	
+	color: #444 !important;
+}
+
+.navbar-brand
+{
+
+	font-size: 26px !important;
+}
+
+.icon{
+
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 20px;
+}
+.back-color{
+
+	background-color: #f7f7f7;
+}
+
+.vote_value {
+font-size: 20px;
+padding-top: 10px;
+
+}
+
+.grey_text {
+
+	color: #aaa;
+}
+
+.btn-full {
+
+	width: 100%;
 }
 
 
+.icon_comment{
 
+	padding-left: 2px;
+	padding-right: 2px;
+	font-size: 10px;
+}
 
+.vote_value_comment {
+font-size: 15px;
+padding-top: 5px;
+
+}
+.rm-pad {
+
+	padding: 0 !important;
+}
+
+.form-outer
+{
+	max-width: 600px ;
+	margin: 0 auto;
+}

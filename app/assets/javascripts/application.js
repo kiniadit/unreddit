@@ -12,6 +12,8 @@
 //
 // = require jquery
 // = require jquery_ujs
+//= require jquery-ui
+//= require autocomplete-rails
 //= require_tree .
 $(document).ready(function(){
    $('.post_vote_up').on("click", function(e) {
@@ -139,15 +141,17 @@ $(document).ready(function(){
 
       e.preventDefault();
       $(this).toggleClass('in-active');
-      var sub_val = $('.subscriber_count+br+a').html();
+      var sub_val = $('.subscribed').html();
 
       if(sub_val.trim() === 'Subscribe')
       {
         sub_val = 'Unsubscribe';
+        $(this).html('Unsubscribe');
       }
       else
       {
         sub_val = 'Subscribe';
+        $(this).html('Subscribe');
       }
 
       var id = $(this).parent().attr('id');

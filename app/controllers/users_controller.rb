@@ -18,7 +18,7 @@ class UsersController < ApplicationController
 		@subscriptions = Subscriber.where(user_id: session[:user_id])
 		@activity_feed = @posts + @comments + @subscriptions
 		@activity_feed.sort_by!(&:created_at)
-		p @activity_feed[0].model_name.human
+		
 	end  
 	private
 

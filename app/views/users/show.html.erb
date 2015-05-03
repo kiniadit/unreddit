@@ -1,76 +1,121 @@
-<h2> Profile </h2>
 
-<p> Hi <%= current_user.name  %>
+<h2> Hi, <%= current_user.name  %>!</h2>
 
-<p>Link Karma: <%= Post.where(user_id: session[:user_id]).count  %></p>
-<p>Comment Karma: <%= Comment.where(user_id: session[:user_id]).count  %></p>
 
-<% @activity_feed.each do |item| %>
-	<% if item.model_name.human == "Subscriber" %>
-		<div style=" width: 800px; border: 1px solid #000; padding-top: 10px; margin-bottom: 10px;">
-		<p><em> You subscribed to: </em>
-		<%=link_to(item.subreddit.title,subreddit_path(item.subreddit))%> <em><%= time_ago_in_words(item.created_at)%> ago</em></p>
+
+<p>Link Karma: <span class="badge"><%= Post.where(user_id: session[:user_id]).count  %></span></p>
+<p>Comment Karma: <span class="badge"><%= Comment.where(user_id: session[:user_id]).count  %></span></p>
+
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
+	<h2>Your Activity Feed</h2>
+
+
+<% if @activity_feed != [] %>
+
+<% @activity_feed.reverse! %>
+
+	<% @activity_feed.each do |item| %>
+		<% if item.model_name.human == "Subscriber" %>
+		  
+	<div class="panel panel-default">
+  	<div class="panel-body">
+		  
+			<p><em> You subscribed to: </em>
+			<%=link_to(item.subreddit.title,subreddit_path(item.subreddit))%> <em><%= time_ago_in_words(item.created_at)%> ago</em></p>
+		</div>
 	</div>
 
-	<% elsif item.model_name.human == "Post"%>
-	<div style=" width: 800px; border: 1px solid #000; padding-top: 10px; margin-bottom: 10px;">
-	<div id="<%=item.id%>" class="tar" style="width: 100px; display: inline-block;">
-		<p class="vote_value" style="background: #f7f7f7; text-align: center;"> <%=PostVote.where(post_id: item.id).sum(:vote_val) %><p>
-		<% if session[:user_id] %>
-			<% vote_val = PostVote.where(user_id: session[:user_id], post_id: item.id).first.vote_val if PostVote.exists?(user_id: session[:user_id], post_id: item.id)%>
+		<% elsif item.model_name.human == "Post"%>
 
-			<% if vote_val == 0 || vote_val == nil%>
-			<% vote_up_class = 'in-active' %>
-			<% vote_down_class = 'in-active' %>
-			<% elsif vote_val == 1 %>
-			<% vote_up_class = '' %>
-			<% vote_down_class = 'in-active' %>
-			<% elsif vote_val == -1 %>
-			<% vote_up_class = 'in-active' %>
-			<% vote_down_class = '' %>
+
+<div class="panel panel-default">
+  <div class="panel-body">
+
+	<div class="row">
+	<div id="<%=item.id%>" class="tar col-md-2 col-sm-4 col-xs-4 text-center" >
+
+			<p class="vote_value"> <%=PostVote.where(post_id: item.id).sum(:vote_val) %></p>
+				<% if session[:user_id] %>
+						<% vote_val = PostVote.where(user_id: session[:user_id], post_id: item.id).first.vote_val if PostVote.exists?(user_id: session[:user_id], post_id: item.id)%>
+
+						<% if vote_val == 0 || vote_val == nil%>
+						<% vote_up_class = 'in-active' %>
+						<% vote_down_class = 'in-active' %>
+						<% elsif vote_val == 1 %>
+						<% vote_up_class = '' %>
+						<% vote_down_class = 'in-active' %>
+						<% elsif vote_val == -1 %>
+						<% vote_up_class = 'in-active' %>
+						<% vote_down_class = '' %>
+						<% end %>
+						<p>
+						<%= link_to(raw("<span class='glyphicon glyphicon-arrow-up icon'></span>"),post_votes_path, :remote => true, :class => 'post_vote_up '+vote_up_class)%>
+						<%= link_to(raw("<span class='glyphicon glyphicon-arrow-down icon'></span>"),post_votes_path, :remote => true, :class => 'post_vote_down '+vote_down_class)%>
+						<p>
+					<% end %>
+				</div>
+
+				<div class="col-md-10 col-sm-6 col-xs-8">
+					<h3><%= link_to item.title, post_path(item)%></h3>
+					<span style=""> <em>Submitted </em><%= time_ago_in_words(item.created_at)%><em> ago by</em> <%=item.user.name%> <em>to</em>
+					<%=link_to(item.subreddit.title,subreddit_path(item.subreddit))%></span>
+				</div>
+
+				</div>
+			</div></div>
+
+
+
+
+
+				<% elsif item.model_name.human == "Comment" %>
+
+
+<div class="panel panel-default">
+  <div class="panel-body">
+
+	<div class="row">
+	<div id="<%=item.id%>" class="tar col-md-2 col-sm-4 col-xs-4 text-center" >
+
+					<p class="vote_value"> <%=CommentVote.where(comment_id: item.id).sum(:vote_val) %></p>
+					<% if session[:user_id] %>
+						<% vote_val = CommentVote.where(user_id: session[:user_id], comment_id: item.id).first.vote_val if CommentVote.exists?(user_id: session[:user_id], comment_id: item.id)%>
+						<% p "vote_val: " + vote_val.to_s %>
+						<% if vote_val == 0 || vote_val == nil%>
+						<% vote_up_class = 'in-active' %>
+						<% vote_down_class = 'in-active' %>
+						<% elsif vote_val == 1 %>
+						<% vote_up_class = '' %>
+						<% vote_down_class = 'in-active' %>
+						<% elsif vote_val == -1 %>
+						<% vote_up_class = 'in-active' %>
+						<% vote_down_class = '' %>
+						<% end %>
+						<p>
+						<%= link_to(raw("<span class='glyphicon glyphicon-arrow-up icon'></span>"),comment_votes_path, :remote => true, :class => 'comment_vote_up '+vote_up_class)%>
+						<%= link_to(raw("<span class='glyphicon glyphicon-arrow-down icon'></span>"),comment_votes_path, :remote => true, :class => 'comment_vote_down '+vote_down_class)%>
+					</p>
+					<% end %>
+				</div>
+				<div class="col-md-10 col-sm-6 col-xs-8">
+					<h4>You said</em>: <%= item.content %><br></h4>
+					<span style=""><em><%= time_ago_in_words(item.created_at)%> ago</em></span><br>
+				</div>
+				</div>
+				</div></div>
+
 			<% end %>
-			<%= link_to("Vote Up",post_votes_path, :remote => true, :class => 'post_vote_up '+vote_up_class)%>
-			<%= link_to("Vote Down",post_votes_path, :remote => true, :class => 'post_vote_down '+vote_down_class)%>
-		<% end %>
-	</div>
-
-	<div style="display: inline-block;">
-		<b>Title:</b> <%= link_to item.title, post_path(item)%> <br>
-		<span style=""> <em>Submitted </em><%= time_ago_in_words(item.created_at)%><em> ago by</em> <%=item.user.name%> <em>to</em>
-		<%=link_to(item.subreddit.title,subreddit_path(item.subreddit))%></span>
-		<br><br>
-		<b>Content:</b> <%= item.content %><br>
-		<br>
-	</div>
-	</div>
-
-	<% elsif item.model_name.human == "Comment" %>
-
-	<div style=" width: 800px; border: 1px solid #000; padding-top: 10px; margin-bottom: 10px;">
-	<div id="<%=item.id%>" class="tar" style="width: 100px; display: inline-block;">
-		<p class="vote_value" style="background: #f7f7f7; text-align: center;"> <%=CommentVote.where(comment_id: item.id).sum(:vote_val) %><p>
-		<% if session[:user_id] %>
-			<% vote_val = CommentVote.where(user_id: session[:user_id], comment_id: item.id).first.vote_val if CommentVote.exists?(user_id: session[:user_id], comment_id: item.id)%>
-			<% p "vote_val: " + vote_val.to_s %>
-			<% if vote_val == 0 || vote_val == nil%>
-			<% vote_up_class = 'in-active' %>
-			<% vote_down_class = 'in-active' %>
-			<% elsif vote_val == 1 %>
-			<% vote_up_class = '' %>
-			<% vote_down_class = 'in-active' %>
-			<% elsif vote_val == -1 %>
-			<% vote_up_class = 'in-active' %>
-			<% vote_down_class = '' %>
-			<% end %>
-			<%= link_to("Vote Up",comment_votes_path, :remote => true, :class => 'comment_vote_up '+vote_up_class)%>
-			<%= link_to("Vote Down",comment_votes_path, :remote => true, :class => 'comment_vote_down '+vote_down_class)%>
-		<% end %>
-	</div>
-	<div style="display: inline-block;">
-		<strong><%=item.user.name  %></strong> <em>said</em>: <%= item.content %><br>
-		<span style=""><em><%= time_ago_in_words(item.created_at)%> ago</em></span><br>
-	</div>
-	</div>
 
 	<% end %>
+
+<% else %>
+
+	<h1>Just Joined!</h1>
+	<% p "hello" %>
+	<p>Go To <a href="/">Home</a> To Start</p>
 <% end %>
+
+</div></div>

@@ -13,6 +13,10 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'reddit#index'
 
+  resources :posts do
+    get :autocomplete_subreddit_title, :on => :collection
+  end
+
   resources :comments
   resources :posts
   resources :subreddits
