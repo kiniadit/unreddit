@@ -1,51 +1,60 @@
-
-<div class="row">
-<div class="col-md-10 col-sm-10 col-xs-12 ">
-<% @posts.each_with_index do |post,index| %>
-
-<div class="panel panel-default">
-  <div class="panel-body">
-
-	<div class="row">
-	<div id="<%=post.id%>" class="tar col-md-2 col-sm-4 col-xs-4 text-center" >
-
-		<p class="vote_value"> <%=@vote_count_arr[index] %></p>
-		<% if session[:user_id] %>
-			<% vote_val = PostVote.where(user_id: session[:user_id], post_id: post.id).first.vote_val if PostVote.exists?(user_id: session[:user_id], post_id: post.id)%>
-			<% if vote_val == 0 || vote_val == nil%>
-			<% vote_up_class = 'in-active' %>
-			<% vote_down_class = 'in-active' %>
-			<% elsif vote_val == 1 %>
-			<% vote_up_class = '' %>
-			<% vote_down_class = 'in-active' %>
-			<% elsif vote_val == -1 %>
-			<% vote_up_class = 'in-active' %>
-			<% vote_down_class = '' %>
-			<% end %>
-			<p>
-			<%= link_to(raw("<span class='glyphicon glyphicon-arrow-up icon'></span>"),post_votes_path, :remote => true, :class => 'post_vote_up '+vote_up_class)%>
-			<%= link_to(raw("<span class='glyphicon glyphicon-arrow-down icon'></span>"),post_votes_path, :remote => true, :class => 'post_vote_down '+vote_down_class)%>
-		</p>
-		<% end %>
-	</div>
-	<div class="col-md-10 col-sm-6 col-xs-8">
-		<h3><%= link_to post.title, post_path(post)%></h3>
-		<span class="grey_text"> <em>Submitted at </em><%= time_ago_in_words(post.created_at)%> <em>by</em> <%=post.user.name%> <em>to</em>
-		<%=link_to(@post_subreddit[index].title,subreddit_path(@post_subreddit[index]))%></span>
-	</div>
-</div>
-
- </div>
-
-
-</div>
-<% end  %>
-
-</div>
-<div class="col-md-2 col-sm-2 col-xs-12 ">
-<%= link_to 'New Post', new_user_post_path(current_user), :class => 'btn btn-default btn-full'  if current_user  %>
-
-
-</div>
-</div>
-
+<html>
+	<head>
+		<title></title>
+	</head>
+	<body>
+		<div class="row">
+			<div class="col-lg-8 col-md-8 col-md-push-0 col-sm-8 col-sm-push-4 col-xs-12 col-xs-push-12">
+				<% @posts.each_with_index do |post,index| %>
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="row">
+							<div id="<%=post.id%>" class="tar col-md-2 col-sm-4 col-xs-4 text-center">
+								<p class="vote_value">
+									<%=@vote_count_arr[index] %>
+								</p><% if session[:user_id] %><% vote_val = PostVote.where(user_id: session[:user_id], post_id: post.id).first.vote_val if PostVote.exists?(user_id: session[:user_id], post_id: post.id)%><% if vote_val == 0 || vote_val == nil%><% vote_up_class = 'in-active' %><% vote_down_class = 'in-active' %><% elsif vote_val == 1 %><% vote_up_class = '' %><% vote_down_class = 'in-active' %><% elsif vote_val == -1 %><% vote_up_class = 'in-active' %><% vote_down_class = '' %><% end %>
+								<p>
+									<%= link_to(raw("<span class='glyphicon glyphicon-arrow-up icon'></span>"),post_votes_path, :remote => true, :class => 'post_vote_up '+vote_up_class)%> <%= link_to(raw("<span class='glyphicon glyphicon-arrow-down icon'></span>"),post_votes_path, :remote => true, :class => 'post_vote_down '+vote_down_class)%>
+								</p><% end %>
+							</div>
+							<div class="col-md-10 col-sm-6 col-xs-8">
+								<h3>
+									<%= link_to post.title, post_path(post)%>
+								</h3><span class="grey_text"><em>Submitted at</em> <%= time_ago_in_words(post.created_at)%> <em>by</em> <%=post.user.name%> <em>to</em> <%=link_to(@post_subreddit[index].title,subreddit_path(@post_subreddit[index]))%></span>
+							</div>
+						</div>
+					</div>
+				</div><% end  %>
+			</div>
+			<div class="col-lg-4 col-md-4 col-md-pull-0 col-sm-4 col-sm-pull-8 col-xs-12 col-xs-pull-12 sidebar">
+				<div class="row">
+					<div class="col-md-12">
+						<%= link_to 'Submit a new text post', new_user_post_path(current_user),:class => 'btn btn-default'  if current_user  %>
+						<form class="form-inline" action="/subreddits" accept-charset="UTF-8" data-remote="true" method="post">
+							<div class="form-group">
+								<input class="input-small" name="utf8" type="hidden" value="✓">
+							</div>
+							<div class="form-group sr-title">
+								<input class="form-control input-small title_field" placeholder="Create new subreddit" type="text" name="subreddit[title]" id="subreddit_title">
+							</div><button type="submit" name="commit" class="btn btn-default new-subreddit">Submit</button>
+						</form>
+					</div>
+				</div>
+				<div class="row" style="padding-top: 20px">
+					<div class="col-md-12">
+						<div class="dropdown">
+							<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">My Subreddits</button>
+							<ul class="dropdown-menu" role="menu">
+								<% current_user.subreddits.each do |subreddit| %>
+								<li role="presentation">
+									<a role="menuitem" tabindex="-1" href="#"><%=link_to subreddit.title, subreddit_path(subreddit)  %></a>
+								</li>
+								<% end %>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -115,3 +115,6 @@ padding-top: 5px;
 	max-width: 600px ;
 	margin: 0 auto;
 }
+.form-inline {
+	padding-top:20px;
+}

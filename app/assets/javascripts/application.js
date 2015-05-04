@@ -178,6 +178,19 @@ localStorage['form_data'] = null;
         });
 
    });
+   $('.new-subreddit').on("click", function(e) {
+            e.preventDefault();
+            var form_data = $('.title_field').val();
+            var values = {
+                subreddit_title: form_data,
+            }
+            var ajaxRequest = $.ajax({
+                url: '/subreddits',
+                type: 'POST', // GET, PUT, DELETE
+                data: values
+            });
+   });
+   //save form data to localStorage to prevent data loss on form
    $('.new-post').on("click", function(e) {
       var yourObject = $('form').serializeArray();
       localStorage['form_data'] = JSON.stringify(yourObject);     

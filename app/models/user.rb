@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
 	validates :name, presence: true
 	validates :password, presence: true
 	has_secure_password
-	has_many :posts
-	has_many :subscribers
+	has_many :posts, dependent: :destroy
+	has_many :subscribers, dependent: :destroy
 	has_many :subreddits, through: :subscribers
 end

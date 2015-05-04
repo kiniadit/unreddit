@@ -6,7 +6,6 @@ class PostsController < ApplicationController
 
   def new
     @subreddit_name = Subreddit.find(session[:subreddit_id]).title if session[:subreddit_id]
-
   end
 
   def create
