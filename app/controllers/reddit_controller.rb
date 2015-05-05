@@ -1,7 +1,6 @@
 class RedditController < ApplicationController
   def index
   	session.delete(:subreddit_id)
-  		redirect_to '/login' if !current_user
 		subscribed_subreddit_ids = Subscriber.where(user_id: session[:user_id]).map {|subscriber| subscriber.subreddit_id}
 		@posts = subscribed_subreddit_ids.map { |s| Post.where(subreddit_id: s)}.flatten
 		@posts += Post.all - @posts
