@@ -17,14 +17,37 @@
 //= require_tree .
 $(document).ready(function(){
 
-var pathname = window.location.pathname; // Returns path only
+    $('#characterLeftTitle').text('0');
+    $('.title_field').keyup(function () {
 
-if(pathname === '/')
-{
-localStorage['form_data'] = null;
+        var len = $(this).val().length;
+        if (len < 25)
+        {
+         $('#characterLeftTitle').css('color','red');
+       }
+       else
+       {
+        $('#characterLeftTitle').css('color','green');
+      }
+            $('#characterLeftTitle').text(len);
+    });
 
-}
 
+    $('#characterLeftContent').text('0');
+    $('.content_field').keyup(function () {
+
+        
+        var len = $(this).val().length;
+        if (len < 100)
+        {
+         $('#characterLeftContent').css('color','red');
+       }
+       else
+       {
+        $('#characterLeftContent').css('color','green');
+      }
+            $('#characterLeftContent').text(len);
+    });
 
    $('.post_vote_up').on("click", function(e) {
       e.preventDefault();
@@ -195,10 +218,14 @@ localStorage['form_data'] = null;
       var yourObject = $('form').serializeArray();
       localStorage['form_data'] = JSON.stringify(yourObject);     
     });
-if(localStorage['form_data'] !== null)
-{
-   $('.title_field').val(JSON.parse(localStorage.getItem('form_data'))[2].value);
-   $('.content_field').val(JSON.parse(localStorage.getItem('form_data'))[3].value);
-   $('.subreddit_field').val(JSON.parse(localStorage.getItem('form_data'))[4].value);
-}
+    var pathname = window.location.pathname; // Returns path only
+    if(pathname === '/'){
+      localStorage.clear();
+    }
+    if(localStorage['form_data'] !== undefined)
+    {
+       $('.title_field').val(JSON.parse(localStorage.getItem('form_data'))[2].value);
+       $('.content_field').val(JSON.parse(localStorage.getItem('form_data'))[3].value);
+       $('.subreddit_field').val(JSON.parse(localStorage.getItem('form_data'))[4].value);
+    }
 });

@@ -1,17 +1,9 @@
 <div class="form-outer">
-	<h1>Add a new post</h1>
-<%=form_for :post, url: user_posts_path(current_user), class: 'form-group' do |f| %>
-	<%=f.label :title %>
-	<%=f.text_field :title, class: 'form-control title_field' %><br>
-
-	<%=f.label :content  %>
-	<%=f.text_area :content, class: 'form-control content_field' %><br>
-
-	<%=f.label :subreddit  %>
-	<%=f.autocomplete_field :subreddit_title, autocomplete_subreddit_title_posts_path, class: 'form-control subreddit_field'%><br>
-
-	<%=f.submit 'Post', :class => 'btn btn-default new-post'  %>
-<% end %>
+	<% if @link_flag%>
+		<%= render 'new_link_form' %>
+	<% else %>
+		<%= render 'new_post_form' %>
+	<% end %>
 <br>
 <p>
 	<em>You Have Subscribed to</em><br>

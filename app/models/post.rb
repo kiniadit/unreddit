@@ -1,6 +1,8 @@
 class Post < ActiveRecord::Base
-  validates :title, presence: true, length: {minimum: 25}
-  validates :content, presence: true, length: { minimum: 100 }
+  profanity_filter :title, :content, :method => 'hollow'
+  validates :title, length: {minimum: 25, maximum: 300}
+  validates :content, allow_blank: true, length: { minimum: 100, maximum: 40000}
+  validates :link, allow_blank: true, format: {with: URI.regexp}
   has_many :comments, dependent: :destroy
   belongs_to :user
   belongs_to :subreddit

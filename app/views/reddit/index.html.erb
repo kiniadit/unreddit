@@ -8,20 +8,11 @@
 				<div class="row">
 					<div class="col-md-12">
 						<%= link_to 'Submit a new text post', new_user_post_path(current_user),:class => 'btn btn-default'  if current_user  %>
-						<form class="form-inline" action="/subreddits" accept-charset="UTF-8" data-remote="true" method="post">
-							<div class="form-group">
-								<input class="input-small" name="utf8" type="hidden" value="✓">
-							</div>
-							<div class="form-group sr-title">
-								<input class="form-control input-small title_field" placeholder="Create new subreddit" type="text" name="subreddit[title]" id="subreddit_title">
-							</div><button type="submit" name="commit" class="btn btn-default new-subreddit">Submit</button>
-						</form>
+						<%= link_to 'Submit a link', new_user_post_path(current_user, :more_params => "link"),:class => 'btn btn-default'  if current_user  %>
+						<%= render 'subreddit_create'  if current_user%>
 					</div>
 				</div>
-				<% if current_user %>
-					<% p "hello" %>
-					<%= render 'subreddit_dropdown'  %>
-				<% end %>
+					<%= render 'subreddit_dropdown'  if current_user%>
 			</div>
 			<div class="col-sm-8 col-sm-pull-4">
 				<% @posts.each_with_index do |post,index| %>
@@ -36,9 +27,21 @@
 									<%= link_to(raw("<span class='glyphicon glyphicon-arrow-up icon'></span>"),post_votes_path, :remote => true, :class => 'post_vote_up '+vote_up_class)%> <%= link_to(raw("<span class='glyphicon glyphicon-arrow-down icon'></span>"),post_votes_path, :remote => true, :class => 'post_vote_down '+vote_down_class)%>
 								</p><% end %>
 							</div>
-							<div class="col-md-10 col-sm-6 col-xs-8">
+							<div class="col-md-2 col-sm-2 col-xs-2">
+								<% if post.link =~ /^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpg|gif|png)$/ %>
+									<%= image_tag post.link, size:"90x90"%>
+								<% elsif post.content %>
+									<%= image_tag "http:/π/www.livebuzzreg.co.uk/common/images/placeholder-image-loading.png", size: "90x90" %>
+								<% end %>
+							</div>
+							<div class="col-md-8 col-sm-6 col-xs-6">
 								<h3>
-									<%= link_to post.title, post_path(post)%>
+									<% if post.content  %>
+									<%= link_to post.title, post_path(post) %>
+									<% elsif post.link  %>
+									<%= link_to post.title, post.link %>
+									<em><%=link_to "view comments", post_path(post, :more_params => "link") %></em>
+									<% end %>
 								</h3><span class="grey_text"><em>Submitted at</em> <%= time_ago_in_words(post.created_at)%> <em>by</em> <%=post.user.name%> <em>to</em> <%=link_to(@post_subreddit[index].title,subreddit_path(@post_subreddit[index]))%></span>
 							</div>
 						</div>

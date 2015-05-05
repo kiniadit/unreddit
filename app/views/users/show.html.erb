@@ -35,7 +35,7 @@
   <div class="panel-body">
 
 	<div class="row">
-	<div id="<%=item.id%>" class="tar col-md-2 col-sm-4 col-xs-4 text-center" >
+	<div id="<%=item.id%>" class="tar col-md-2 col-sm-2 col-xs-2 text-center" >
 
 			<p class="vote_value"> <%=PostVote.where(post_id: item.id).sum(:vote_val) %></p>
 				<% if session[:user_id] %>
@@ -57,9 +57,22 @@
 						<p>
 					<% end %>
 				</div>
-
-				<div class="col-md-10 col-sm-6 col-xs-8">
-					<h3><%= link_to item.title, post_path(item)%></h3>
+				<div class="col-md-2 col-sm-2 col-xs-2">
+					<% if item.link =~ /^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpg|gif|png)$/ %>
+						<%= image_tag item.link, size:"90x90"%>
+					<% elsif item.content %>
+						<%= image_tag "http:/π/www.livebuzzreg.co.uk/common/images/placeholder-image-loading.png", size: "90x90" %>
+					<% end %>
+				</div>
+				<div class="col-md-8 col-sm-8 col-xs-8">
+					<h3>
+						<% if item.content  %>
+							<%= link_to item.title, post_path(item) %>
+						<% elsif item.link  %>
+							<%= link_to item.title, item.link %>
+							<em><%=link_to "view comments", post_path(item, :more_params => "link") %></em>
+						<% end %>
+					</h3>
 					<span style=""> <em>Submitted </em><%= time_ago_in_words(item.created_at)%><em> ago by</em> <%=item.user.name%> <em>to</em>
 					<%=link_to(item.subreddit.title,subreddit_path(item.subreddit))%></span>
 				</div>

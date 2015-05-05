@@ -47,7 +47,7 @@ p {
 
 .subscribed
 {
-padding-left:5px; 
+	padding-left:5px; 
 	padding-right: 5px; 
 	color: green !important;
 
@@ -61,9 +61,18 @@ padding-left:5px;
 }
 
 .navbar-brand
-{
+ {
+ 	font-size: 30px;
+	font-weight: 500;
+	font-family: 'Marck Script', cursive;
+}
 
-	font-size: 26px !important;
+.navbar {
+	border-radius: 0px;
+}
+
+.navbar-default {
+  background-color: #D7EDFF;
 }
 
 .icon{
