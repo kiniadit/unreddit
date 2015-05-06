@@ -1,12 +1,32 @@
-<h2>
-	Hi, <%= current_user.name  %>!
-</h2>
-<p>
-	Link Karma: <span class="badge"><%= Post.where(user_id: session[:user_id]).count  %></span>
-</p>
-<p>
-	Comment Karma: <span class="badge"><%= Comment.where(user_id: session[:user_id]).count  %></span>
-</p>
+
+
+<div class="row" style="padding-top: 20px">
+	<div class="col-md-4">
+		<h2>
+		Hi, <%= current_user.name  %>!
+		</h2>
+		<p>
+			Link Karma: <span class="badge"><%= get_user_link_count(current_user.id)  %></span>
+		</p>
+		<p>
+			Post Karma: <span class="badge"><%= get_user_post_count(current_user.id)  %></span>
+		</p>
+		<p>
+			Comment Karma: <span class="badge"><%= get_user_comment_count(current_user.id)  %></span>
+		</p>
+	</div>
+	<div class="col-md-4">
+		<p>
+			<em>You Have Subscribed to</em><br>
+			<% subscriber_list = Subscriber.where(user_id: current_user.id) %>
+			<% subscriber_list.each do |item| %>
+				<%= link_to(Subreddit.find(item.subreddit_id).title, subreddit_path(Subreddit.find(item.subreddit.id))) %>
+
+			<% end%>
+
+		</p>
+	</div>
+</div>
 <div class="panel panel-default">
 	<div class="panel-body">
 		<h2>

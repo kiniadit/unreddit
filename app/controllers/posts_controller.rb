@@ -1,11 +1,19 @@
 class PostsController < ApplicationController
   autocomplete :subreddit, :title
   before_filter :authorize
+  
   def index
+    if params[:search]
+      @posts = Post.search(params[:search]).order("created_at DESC")
+    else
+      @posts = Post.all.order('created_at DESC')
+    end
+    @vote_count_arr = @posts.map { |p| PostVote.where(post_id: p.id).inject(0) {|sum,pv| sum+pv.vote_val}}
+    @post_subreddit = @posts.map { |p| Subreddit.find(p.subreddit_id)}
   end
 
   def new
-    p @link_flag = true if params[:more_params] == "link"
+    @link_flag = true if params[:more_params] == "link"
     @subreddit_name = Subreddit.find(session[:subreddit_id]).title if session[:subreddit_id]
   end
 

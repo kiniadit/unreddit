@@ -6,4 +6,8 @@ class Post < ActiveRecord::Base
   has_many :comments, dependent: :destroy
   belongs_to :user
   belongs_to :subreddit
+  
+  def self.search(query)
+  	where("lower(title) like ? OR lower(content) like ? OR lower(link) like ?", "%#{query.downcase}%","%#{query.downcase}%","%#{query.downcase}%") 
+  end
 end

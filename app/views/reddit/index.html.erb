@@ -3,9 +3,13 @@
 		<title></title>
 	</head>
 	<body>
+
 		<div class="row">
 			<%= render 'sidebar' %>
-			<%= render 'post_body'  %>	
+			<%= render 'posts_body'  %>	
+			<div class="row text-center"> 
+				<%= will_paginate @posts  %>
+			</div>
 		</div>
 	</body>
 </html>

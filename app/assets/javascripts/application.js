@@ -203,7 +203,7 @@ $(document).ready(function(){
    });
    $('.new-subreddit').on("click", function(e) {
             e.preventDefault();
-            var form_data = $('.title_field').val();
+            var form_data = $('.subreddit_title_field').val();
             var values = {
                 subreddit_title: form_data,
             }

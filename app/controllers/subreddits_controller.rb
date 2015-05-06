@@ -5,7 +5,7 @@ class SubredditsController < ApplicationController
   def new
   end
   def create
-    @subreddit = Subreddit.new(title: params[:subreddit_title])
+    @subreddit = Subreddit.new(title: params[:subreddit_title].downcase)
     respond_to do |format|
       if @subreddit.save
         format.js { render 'create.js.erb' }

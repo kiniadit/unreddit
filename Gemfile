@@ -34,6 +34,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
+# Pagination
+gem 'will_paginate'
+
 #profanity filter
 gem 'profanity_filter', '~> 0.1.1'
 

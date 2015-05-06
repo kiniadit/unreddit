@@ -22,11 +22,21 @@ module ApplicationHelper
     end
   end
 
-   def find_post_vote_val(post_id, user_id)
+  def find_post_vote_val(post_id, user_id)
     if PostVote.exists?(post_id: post_id, user_id: user_id)
       return PostVote.find_by(post_id: post_id, user_id: user_id).vote_val 
     else
       return 0
     end
+  end
+
+  def get_user_post_count(user_id)
+    Post.where(user_id: user_id).where.not(content: nil).count
+  end
+  def get_user_link_count(user_id)
+    Post.where(user_id: user_id).where.not(link: nil).count
+  end
+  def get_user_comment_count(user_id)
+    Comment.where(user_id: session[:user_id]).count
   end
 end
