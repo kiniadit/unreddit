@@ -40,6 +40,9 @@ gem 'will_paginate'
 #profanity filter
 gem 'profanity_filter', '~> 0.1.1'
 
+#link-thumbnails
+gem 'link_thumbnailer'
+
 # Use Unicorn as the app server
 # gem 'unicorn'
 

@@ -39,4 +39,7 @@ module ApplicationHelper
   def get_user_comment_count(user_id)
     Comment.where(user_id: session[:user_id]).count
   end
+  def get_image(link)
+    LinkThumbnailer.generate(link).images.first.src.to_s
+  end
 end

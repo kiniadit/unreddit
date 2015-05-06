@@ -10,7 +10,7 @@
 				</p><% end %>
 			</div>
 			<div class="col-md-2 col-sm-2 col-xs-2">
-				<% if item.link %><% if item.link =~ /^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpg|gif|png)$/ %><%= image_tag item.link, size:"90x90"%><% else %><%= image_tag "http://placehold.it/90x90", size: "90x90" %><% end %><% elsif item.content %><%= image_tag "http://placehold.it/90x90", size: "90x90" %><% end %>
+				<% if item.link %><% if item.link =~ /^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpg|gif|png)$/ %><%= image_tag item.link, size:"90x90"%><% else %><%= image_tag get_image(item.link), size: "90x90" %><% end %><% elsif item.content %><%= image_tag "http://placehold.it/90x90", size: "90x90" %><% end %>
 			</div>
 			<div class="col-md-8 col-sm-8 col-xs-8">
 				<h3>

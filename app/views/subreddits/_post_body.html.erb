@@ -17,7 +17,7 @@
 						<% if post.link =~ /^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpg|gif|png)$/ %>
 							<%= image_tag post.link, size:"90x90"%>
 						<% else %>
-							<%= image_tag "http://placehold.it/90x90", size: "90x90" %>
+							<%= image_tag get_image(post.link), size: "90x90" %>
 						<% end %>
 					<% elsif post.content %>
 						<%= image_tag "http://placehold.it/90x90", size: "90x90" %>
