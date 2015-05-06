@@ -21,4 +21,12 @@ module ApplicationHelper
       return 0
     end
   end
+
+   def find_post_vote_val(post_id, user_id)
+    if PostVote.exists?(post_id: post_id, user_id: user_id)
+      return PostVote.find_by(post_id: post_id, user_id: user_id).vote_val 
+    else
+      return 0
+    end
+  end
 end
