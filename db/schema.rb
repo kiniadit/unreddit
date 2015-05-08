@@ -17,11 +17,11 @@ ActiveRecord::Schema.define(version: 20150501132549) do
   enable_extension "plpgsql"
 
   create_table "comment_votes", force: :cascade do |t|
-    t.integer  "vote_val"
+    t.integer  "vote_val",   default: 0
     t.integer  "user_id"
     t.integer  "comment_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "comment_votes", ["comment_id"], name: "index_comment_votes_on_comment_id", using: :btree
@@ -39,11 +39,11 @@ ActiveRecord::Schema.define(version: 20150501132549) do
   add_index "comments", ["user_id"], name: "index_comments_on_user_id", using: :btree
 
   create_table "post_votes", force: :cascade do |t|
-    t.integer  "vote_val"
+    t.integer  "vote_val",   default: 0
     t.integer  "user_id"
     t.integer  "post_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
   add_index "post_votes", ["post_id"], name: "index_post_votes_on_post_id", using: :btree

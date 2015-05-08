@@ -128,3 +128,19 @@ padding-top: 5px;
 .form-inline {
 	padding-top:20px;
 }
+
+.span-small-text {
+
+	padding-left: 10px;
+	font-size: 16px;
+}
+
+.thumb-image {
+border-radius: 3px;
+box-shadow: 1px 1px 3px 1px #eee;
+	}
+
+h3 {
+
+	margin-top: 5px !important;
+}

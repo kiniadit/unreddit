@@ -1,4 +1,9 @@
 <div class="col-sm-8 col-sm-pull-4">
+<div class="sort-links">
+Sort By: 
+<%= sortable "title" %>
+<%= sortable "created_at", "Date" %>
+</div>
 	<% @posts.each_with_index do |post,index| %>
 		<div class="panel panel-default">
 			<div class="panel-body">
@@ -17,12 +22,12 @@
 					<div class="col-md-2 col-sm-2 col-xs-2">
 						<% if post.link %>
 							<% if post.link =~ /^https?:\/\/(?:[a-z\-]+\.)+[a-z]{2,6}(?:\/[^\/#?]+)+\.(?:jpg|gif|png)$/ %>
-								<%= image_tag post.link, size:"90x90"%>
+								<%= image_tag post.link, size:"90x90", class: "thumb-image" %>
 							<% else %>
-								<%= image_tag get_image(post.link), size: "90x90" %>
+								<%= image_tag get_image(post.link), size: "90x90", class: "thumb-image" %>
 							<% end %>
 						<% elsif post.content %>
-							<%= image_tag "http://placehold.it/90x90", size: "90x90" %>
+							<%= image_tag "http://placehold.it/90x90", size: "90x90", class: "thumb-image" %>
 						<% end %>
 					</div>
 					<div class="col-md-8 col-sm-6 col-xs-6">
@@ -31,7 +36,7 @@
 							<%= link_to post.title, post_path(post) %>
 							<% elsif post.link  %>
 							<%= link_to post.title, post.link %>
-							<em><%=link_to "view comments", post_path(post, :more_params => "link") %></em>
+							<span class="span-small-text"><%=link_to "View comments >", post_path(post, :more_params => "link") %></span>
 							<% end %>
 						</h3><span class="grey_text"><em>Submitted at</em> <%= time_ago_in_words(post.created_at)%> <em>by</em> <%=post.user.name%> <em>to</em> <%=link_to(@post_subreddit[index].title,subreddit_path(@post_subreddit[index]))%></span>
 					</div>
@@ -39,4 +44,7 @@
 			</div>
 		</div>
 	<% end  %>
+	<div class="row text-center"> 
+		<%= will_paginate @posts  %>				
+	</div>
 </div>

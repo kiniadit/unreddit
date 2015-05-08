@@ -3,9 +3,12 @@ class PostsController < ApplicationController
   before_filter :authorize
   
   def index
+    
     if params[:search]
+      @search = true
       @posts = Post.search(params[:search]).order("created_at DESC")
     else
+      @search = false
       @posts = Post.all.order('created_at DESC')
     end
     @vote_count_arr = @posts.map { |p| PostVote.where(post_id: p.id).inject(0) {|sum,pv| sum+pv.vote_val}}
